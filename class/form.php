@@ -42,17 +42,17 @@ class FormBuilder
 
     public function makeSelect($options)
     {
-        $result = '<select class="custom-select">';
-        foreach ($options as $val) {
-            $result .= $this->makeOption($val);
+        $result = '<select class="custom-select ">';
+        foreach ($options as $elements) {
+            $result .= $this->makeOption($elements);
         }
         $result .= '</select>';
         return $result;
     }
 
-    private function makeOption($val)
+    private function makeOption($elements)
     {
-        return "<option>$val</option>";
+        return "<option>$elements</option>";
     }
 
 

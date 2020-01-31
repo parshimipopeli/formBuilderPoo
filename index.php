@@ -7,6 +7,7 @@ require_once 'class/form.php';
 //    require_once 'class' . DIRECTORY_SEPARATOR . $file . '.php';
 //});
 //use form;
+$elements = ['france', 'belgique', 'espagne', 'allemagne']
 ?>
 <!doctype html>
 <html lang=fr>
@@ -24,6 +25,8 @@ require_once 'class/form.php';
 <?php
 $startForm = new FormBuilder();
 echo $startForm->starForm('post', 'index.php', 'formulaire');
+echo $startForm->makeSelect($elements);
+
 echo $startForm->makeInput('text', 'firstName',  'Entrez votre nom');
 echo $startForm->makeInput('text', 'lastName', 'Entrez votre prénom');
 echo $startForm->makeInput('text', 'adress', 'Entrez votre adresse');
@@ -31,7 +34,6 @@ echo $startForm->makeInput('date', 'date', 'Entrez votre date de naissance');
 echo $startForm->makeInput('mail', 'email', 'Entrez votre email');
 echo $startForm->makeInput('password', 'pwd', 'Entrez votre mot de passe');
 echo $startForm->makeTextarea('Ecrivez ici votre message !');
-echo $startForm->makeSelect('france');
 echo $startForm->makeButton('submit', 'submit');
 echo $startForm->endForm();
 ?>
