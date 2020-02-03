@@ -1,7 +1,7 @@
 <?php
 
 require_once 'class/form.php';
-require_once 'validator/traitementForm.php';
+require_once 'validator/Validator.php';
 //spl_autoload_register(function ($className) {
 //    $file = str_replace('\\', DIRECTORY_SEPARATOR, $className);
 //
@@ -10,7 +10,30 @@ require_once 'validator/traitementForm.php';
 //use form;
 $elements = ['france', 'belgique', 'espagne', 'allemagne'];
 $val = ['homme', 'femme'];
+foreach ($_POST as $key => $val) {
+    $postSecure[$key] = htmlspecialchars($val);
+
+}
+if (isset($_POST['submit'])) {
+// verifier les conditions de validation du formulaire
+    $validator = new validator();
+    $validator->setName('email')->setValue($_POST['email'])->isEmail();
+    $validator->setName('password')->setValue($_POST['pwd'])->verifMinLength(6)->verifMaxLength(21);
+    $validator->setName('firstName')->setValue($_POST['firstName'])->isString();
+
+    if ($validator->isValid()) {
+        echo '' . "<br>";
+    } else {
+        foreach ($validator->getErrors() as $key=> $element) {
+            echo $key . " " . $element;
+        }
+
+    }
+
+}
 ?>
+
+
 <!doctype html>
 <html lang=fr>
 <head>
@@ -25,25 +48,32 @@ $val = ['homme', 'femme'];
 </head>
 <body>
 
+
 <?php
 $startForm = new FormBuilder();
 echo $startForm->starForm('post', 'index.php', 'formulaire');
 
-echo $startForm->makeCheckBox("check", "homme");
-echo $startForm->makeCheckBox("check", "femme");
-echo $startForm->makeRadio('radio', 'enter 20 et 30 ans');
-echo $startForm->makeRadio('radio', 'enter 30 et 40 ans');
-echo $startForm->makeRadio('radio', 'enter 40 et 50 ans');
+//echo $startForm->makeCheckBox("check", "homme");
+//echo $startForm->makeCheckBox("check", "femme");
+//echo $startForm->makeRadio('radio', 'enter 20 et 30 ans');
+//echo $startForm->makeRadio('radio', 'enter 30 et 40 ans');
+//echo $startForm->makeRadio('radio', 'enter 40 et 50 ans');
 echo $startForm->makeInput('text', 'firstName', 'firstName', 'Entrez votre nom');
 echo $startForm->makeInput('text', 'lastName', 'lastName', 'Entrez votre prenom');
 echo $startForm->makeInput('text', 'adress', 'adress', 'Entrez votre adresse');
-echo $startForm->makeSelect('select', $elements);
+echo $startForm->makeSelect('pays', $elements);
 echo $startForm->makeInput('date', 'date', 'date', 'Entrez votre date de naissance');
 echo $startForm->makeInput('mail', 'email', 'email', 'Entrez votre email');
 echo $startForm->makeInput('password', 'pwd', 'pwd', 'Entrez votre mot de passe');
-echo $startForm->makeTextarea('message','Ecrivez ici votre message !');
+echo $startForm->makeTextarea('message', 'Ecrivez ici votre message !');
 echo $startForm->makeButton('submit', 'submit');
 echo $startForm->endForm();
+if (!empty($error)) {
+    foreach ($error as $errors) {
+        echo $errors;
+        var_dump($error);
+    }
+}
 ?>
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
